@@ -18,9 +18,11 @@ var helpers = require('./helpers');
 var App = React.createClass({
 
     getInitialState: function () {
+        var localStorageRef = localStorage.getItem('order-' + this.props.params.storeId);
+
         return {
             fishes: {},
-            order: {}
+            order: localStorageRef ? JSON.parse(localStorageRef) : {}
         };
     },
 
@@ -29,6 +31,10 @@ var App = React.createClass({
             context: this,
             state: 'fishes'
         });
+    },
+
+    componentWillUpdate: function(nextProps, nextState) {
+        localStorage.setItem('order-' + this.props.params.storeId, JSON.stringify(nextState.order));
     },
 
     addToOrder: function(key) {
